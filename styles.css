@@ -132,6 +132,8 @@ body.menu-open .burger span:last-child{transform:translateY(-4px) rotate(-45deg)
 @media(min-width:1140px){
   :root{--hh:76px}
   .logo img{height:26px}
+  /* логотип подтянут к навигации, чтобы не висел один у края экрана */
+  .logo{justify-self:end;margin-right:clamp(0px,7vw,110px)}
   .nav{display:flex}
   .hdr-call{width:auto;padding:0 18px}
   .hdr-call span{display:inline}
