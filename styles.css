@@ -445,6 +445,112 @@ html.no-plate .wide-stamp{--op:1;--ap:1}
 }
 @media(max-width:759px){.wide-stamp{aspect-ratio:4/3}}
 
+/* -------- цифры -------- */
+.sec-nums{background:var(--paper-2)}
+.sec-nums::before{
+  content:"";position:absolute;left:50%;top:50%;width:min(1400px,120vw);height:74%;
+  border:2px solid rgba(9,106,156,.08);border-radius:56px;transform:translate(-50%,-50%) rotate(3deg);pointer-events:none;
+}
+.nums{display:grid;grid-template-columns:1fr;gap:14px;width:min(1120px,100%);margin:0 auto}
+.num-c{
+  position:relative;background:#fff;border-radius:22px;padding:30px 22px 26px;text-align:center;
+  box-shadow:0 22px 44px -32px rgba(11,46,69,.45);
+  display:flex;flex-direction:column;align-items:center;
+}
+.num-c::before{content:"";position:absolute;inset:9px;border:1.5px dashed rgba(9,106,156,.2);border-radius:15px;pointer-events:none}
+.num-c::after{
+  content:"";position:absolute;right:16px;top:16px;width:9px;height:9px;border-radius:50%;
+  background:var(--coral);opacity:.85;
+}
+.cnt{
+  font-family:var(--fd);font-weight:800;font-size:clamp(48px,6.6vw,66px);line-height:1;
+  letter-spacing:-.045em;color:var(--blue);font-variant-numeric:tabular-nums;
+}
+.num-t{font-family:var(--fd);font-weight:700;font-size:15.5px;color:var(--ink);letter-spacing:-.01em}
+.num-t::before{content:"";display:block;width:30px;height:3px;border-radius:2px;background:var(--coral);margin:14px auto 12px}
+.num-s{margin-top:8px;font-size:13.5px;line-height:1.45;color:var(--mut);max-width:250px}
+@media(min-width:560px){.nums{grid-template-columns:1fr 1fr;gap:16px}}
+@media(min-width:1000px){.nums{grid-template-columns:repeat(4,1fr);gap:18px}}
+
+/* -------- визы клиентов -------- */
+.sec-visas::before{
+  content:"";position:absolute;left:50%;top:50%;width:min(1400px,120vw);height:72%;
+  border:2px solid rgba(9,106,156,.07);border-radius:56px;transform:translate(-50%,-50%) rotate(-4deg);pointer-events:none;
+}
+.strip-wrap{position:relative;z-index:1}
+.visa-strip{
+  display:flex;gap:clamp(14px,2vw,22px);overflow-x:auto;scroll-snap-type:x proximity;
+  padding:14px max(20px,calc((100% - 1120px)/2)) 22px;
+  scrollbar-width:none;-ms-overflow-style:none;-webkit-overflow-scrolling:touch;
+}
+.visa-strip::-webkit-scrollbar{display:none}
+.visa{flex:0 0 auto;scroll-snap-align:center}
+.visa-b{
+  display:block;border:0;padding:10px 10px 0;background:#fff;border-radius:20px;cursor:pointer;text-align:center;
+  box-shadow:0 26px 48px -32px rgba(11,46,69,.6);
+  transition:transform .45s var(--ease),box-shadow .45s;
+}
+.visa-b img{height:clamp(290px,40vw,420px);width:auto;border-radius:12px}
+.visa-cap{
+  display:block;padding:12px 6px 14px;font-family:var(--fd);font-weight:700;font-size:13px;
+  color:var(--ink);white-space:nowrap;
+}
+.visa:nth-child(odd) .visa-b{transform:rotate(-1.1deg)}
+.visa:nth-child(even) .visa-b{transform:rotate(1.1deg)}
+.visa .visa-b:hover,.visa .visa-b:focus-visible{
+  transform:rotate(0deg) translateY(-8px);box-shadow:0 36px 60px -30px rgba(11,46,69,.7);
+}
+.visa .visa-b:focus-visible{outline:2px solid var(--blue);outline-offset:4px}
+.visa-note{
+  margin-top:clamp(14px,2.4vw,24px);text-align:center;font-size:13.5px;color:var(--mut);
+}
+.strip-arrow{display:none}
+@media(min-width:1080px){
+  .strip-arrow{
+    display:grid;place-items:center;position:absolute;top:calc(50% - 26px);z-index:3;
+    width:52px;height:52px;border-radius:50%;border:0;background:#fff;cursor:pointer;
+    box-shadow:0 16px 34px -16px rgba(11,46,69,.55);
+    transition:transform .3s var(--ease),opacity .3s,background .25s;
+  }
+  .strip-prev{left:10px}
+  .strip-next{right:10px}
+  .strip-arrow svg{width:22px;height:22px;fill:none;stroke:var(--ink);stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round}
+  .strip-arrow:hover{transform:scale(1.08)}
+  .strip-arrow[disabled]{opacity:0;pointer-events:none}
+}
+
+/* -------- просмотр визы -------- */
+.lbox{
+  position:fixed;inset:0;z-index:200;display:flex;align-items:center;justify-content:center;
+  padding:18px;background:rgba(6,26,40,.92);animation:lbin .28s ease both;
+}
+.lbox[hidden]{display:none}
+@keyframes lbin{from{opacity:0}to{opacity:1}}
+.lbox-in{margin:0;display:flex;flex-direction:column;align-items:center;gap:14px;max-width:100%}
+.lbox-in img{
+  max-height:calc(100svh - 150px);max-width:100%;width:auto;border-radius:14px;background:#fff;
+  box-shadow:0 40px 80px -40px #000;animation:lbup .4s var(--ease) both;
+}
+@keyframes lbup{from{opacity:0;transform:scale(.94)}to{opacity:1;transform:none}}
+.lbox-in figcaption{font-family:var(--fd);font-weight:700;font-size:14px;color:#fff;text-align:center}
+.lbox-x,.lbox-nav{
+  position:absolute;display:grid;place-items:center;width:48px;height:48px;border-radius:50%;
+  border:1.5px solid rgba(255,255,255,.28);background:rgba(255,255,255,.08);cursor:pointer;
+  transition:background .25s,transform .3s var(--ease);
+}
+.lbox-x svg,.lbox-nav svg{width:22px;height:22px;fill:none;stroke:#fff;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round}
+.lbox-x:hover,.lbox-nav:hover{background:rgba(255,255,255,.2);transform:scale(1.07)}
+.lbox-x{top:14px;right:14px}
+.lbox-p{left:14px;bottom:16px}
+.lbox-n{right:14px;bottom:16px}
+@media(min-width:760px){
+  .lbox-p,.lbox-n{top:50%;bottom:auto;transform:translateY(-50%)}
+  .lbox-p:hover,.lbox-n:hover{transform:translateY(-50%) scale(1.07)}
+  .lbox-p{left:20px}
+  .lbox-n{right:20px}
+}
+body.lb-open{overflow:hidden}
+
 /* -------- отзывы -------- */
 .reviews{display:grid;grid-template-columns:1fr;gap:16px;width:min(1120px,100%);margin:0 auto}
 .review{

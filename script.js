@@ -15,14 +15,14 @@ var doc = document.documentElement;
    Разметка русская. Нет ключа - строка остаётся русской. */
 var KZ = {
 "m.title":"Астанадағы виза орталығы - АҚШ, Шенген, Ұлыбритания визалары | Visair.kz",
-"m.desc":"Visair.kz - 2018 жылдан бері Астанадағы виза орталығы. АҚШ, Еуропа (Шенген), Ұлыбритания, Канада, Жапония визалары. 2ГИС-те 110-нан астам пікір бойынша 5.0 рейтинг. Қызмет құны 40 000 ₸-ден.",
+"m.desc":"Visair.kz - 2018 жылдан бері Астанадағы виза орталығы, 8000-нан астам мақұлданған виза. АҚШ, Шенген, Ұлыбритания, Канада, Жапония. 2ГИС-те 5.0 рейтинг. Қызмет 40 000 ₸-ден.",
 "a.skip":"Бағыттарға өту","a.home":"Visair.kz - басты бетке","a.nav":"Сайт бөлімдері","a.lang":"Сайт тілі","a.call":"Қоңырау шалу","a.menu":"Мәзір",
 "nav.dir":"Бағыттар","nav.price":"Бағалар","nav.how":"Қалай жұмыс істейміз","nav.rev":"Пікірлер","nav.cont":"Байланыс",
 "nav.wa":"WhatsApp-қа жазу","nav.note":"Астана, Достық көшесі, 1 · Дс-Жм 10:00-19:00",
 
 "h.kicker":"Астанадағы виза орталығы · 2018 жылдан",
 "h.h1":"АҚШ, Еуропа, Ұлыбритания және Канада визалары",
-"h.lead":"Сауалнама, құжаттар, тапсыруға жазылу және нәтижеге дейін қолдау. Қызмет құны - 40 000 ₸-ден. <a href=\"https://2gis.kz/astana/geo/70000001061028917\" target=\"_blank\" rel=\"noopener\">2ГИС-те 110-нан астам пікір бойынша 5.0</a> рейтинг.",
+"h.lead":"Сауалнамадан нәтижеге дейін жүргіземіз. 2018 жылдан бері 8000-нан астам мақұлданған виза, <a href=\"https://2gis.kz/astana/geo/70000001061028917\" target=\"_blank\" rel=\"noopener\">2ГИС-те 5.0</a> рейтинг.",
 "h.cta1":"WhatsApp-қа жазу","h.cta2":"Виза бағалары",
 "h.alt":"Виза орталығының үстеліндегі визалар мен мөрлер басылған паспорт",
 "h.tag":"Visair.kz · Астана · 2018 жылдан",
@@ -57,6 +57,24 @@ var KZ = {
 "w.s3":"Тапсыру","w.s3t":"Биометрияға немесе сұхбатқа жазамыз және оған дайындаймыз",
 "w.s4":"Нәтиже","w.s4t":"Визалы паспортты алғанға дейін қолдау көрсетеміз",
 "w.alt":"Қолдағы отырғызу талондары бар паспорттар","w.tag":"Ұшуға дайын",
+
+"n.k":"Visair сандармен","n.h":"Сегіз жыл жұмыс және мыңдаған мақұлданған виза",
+"n.l":"Уәде емес - клиенттеріміздің паспортында тұрған нәрсе.",
+"n.t1":"жыл нарықта","n.s1":"2018 жылдан бері жұмыс істейміз, кеңсе Астанада",
+"n.t2":"мақұлданған виза","n.s2":"Шенген, АҚШ, Ұлыбритания, Канада, Азия",
+"n.t3":"2ГИС рейтингі","n.s3":"Компания карточкасының ең жоғары бағасы",
+"n.t4":"клиент пікірі","n.s4":"Виза алған адамдардың нақты пікірлері",
+
+"v.k":"Нәтиже","v.h":"Клиенттеріміздің визалары",
+"v.l":"Нағыз паспорт беттері. Жеке деректер иелерінің өтініші бойынша жабылған.",
+"v.c1":"Финляндия · Шенген C","v.c2":"Испания · Шенген, көп мәрте","v.c3":"Германия · Шенген, көп мәрте",
+"v.c4":"Франция · Шенген, көп мәрте","v.c5":"Польша · Шенген C","v.c6":"Канада · студенттік","v.c7":"Жапония · Temporary Visitor",
+"v.a1":"Клиент паспортындағы Финляндияның шенген визасы","v.a2":"Клиент паспортындағы Испанияның шенген көп мәрте визасы",
+"v.a3":"Клиент паспортындағы Германияның шенген көп мәрте визасы","v.a4":"Клиент паспортындағы Францияның шенген көп мәрте визасы",
+"v.a5":"Клиент паспортындағы Польшаның шенген визасы","v.a6":"Клиент паспортындағы Канаданың студенттік визасы",
+"v.a7":"Клиент паспортындағы Жапонияның Temporary Visitor екі визасы",
+"v.note":"Виза беру туралы шешімді консулдық қабылдайды. Біз құжаттарды формальды себептермен бас тарту болмайтындай дайындаймыз.",
+"v.sprev":"Алдыңғы визалар","v.snext":"Келесі визалар","v.prev":"Алдыңғы","v.next":"Келесі","v.close":"Жабу",
 
 "r.k":"Пікірлер","r.h":"2ГИС-те 110-нан астам пікір бойынша 5.0 рейтинг",
 "r.l":"Виза алғаннан кейінгі клиенттердің нақты хабарламалары.",
@@ -353,6 +371,112 @@ if (HAS_IO && !RED) {
   }, 2500);
 } else {
   document.querySelectorAll(".rv, .wide-stamp").forEach(function(el){ el.classList.add("in"); });
+}
+
+/* ---------------- СЧЁТЧИКИ В БЛОКЕ ЦИФР ----------------
+   Значение по умолчанию стоит в разметке - без JS блок читается как есть. */
+function fmtNum(v, dec){
+  var t = v.toFixed(dec);
+  var p = t.split(".");
+  p[0] = p[0].replace(/\B(?=(\d{3})+(?!\d))/g, " ");
+  return p.join(".");
+}
+function runCount(el){
+  var to = parseFloat(el.dataset.to) || 0;
+  var dec = parseInt(el.dataset.dec || "0", 10);
+  var suf = el.dataset.suf || "";
+  if (RED) { el.textContent = fmtNum(to, dec) + suf; return; }
+  var t0 = null, dur = 1500;
+  requestAnimationFrame(function frame(t){
+    if (t0 === null) t0 = t;
+    var k = Math.min(1, (t - t0) / dur);
+    var e = 1 - Math.pow(1 - k, 3);
+    el.textContent = fmtNum(to * e, dec) + suf;
+    if (k < 1) requestAnimationFrame(frame);
+  });
+}
+var cnts = [].slice.call(document.querySelectorAll(".cnt"));
+if (cnts.length) {
+  if (HAS_IO && !RED) {
+    cnts.forEach(function(c){ c.textContent = fmtNum(0, parseInt(c.dataset.dec || "0", 10)) + (c.dataset.suf || ""); });
+    var cio = new IntersectionObserver(function(es){
+      es.forEach(function(e){ if (e.isIntersecting) { runCount(e.target); cio.unobserve(e.target); } });
+    }, {threshold:.45});
+    cnts.forEach(function(c){ cio.observe(c); });
+    setTimeout(function(){
+      cnts.forEach(function(c){
+        var r = c.getBoundingClientRect();
+        if (r.top < innerHeight && r.bottom > 0 && c.textContent.charAt(0) === "0") { cio.unobserve(c); runCount(c); }
+      });
+    }, 2500);
+  } else {
+    cnts.forEach(runCount);
+  }
+}
+
+/* ---------------- ЛЕНТА ВИЗ ---------------- */
+var strip = document.getElementById("visaStrip");
+var stripPrev = document.querySelector(".strip-prev");
+var stripNext = document.querySelector(".strip-next");
+function stripStep(){
+  var c = strip && strip.querySelector(".visa");
+  var g = parseFloat(getComputedStyle(strip).columnGap) || 18;
+  return c ? c.getBoundingClientRect().width + g : 300;
+}
+function stripSync(){
+  if (!strip || !stripPrev) return;
+  stripPrev.disabled = strip.scrollLeft < 8;
+  stripNext.disabled = strip.scrollLeft > strip.scrollWidth - strip.clientWidth - 8;
+}
+if (strip) {
+  if (stripPrev && stripNext) {
+    stripPrev.addEventListener("click", function(){ strip.scrollBy({left:-stripStep(), behavior: RED ? "auto" : "smooth"}); });
+    stripNext.addEventListener("click", function(){ strip.scrollBy({left: stripStep(), behavior: RED ? "auto" : "smooth"}); });
+  }
+  strip.addEventListener("scroll", function(){ requestAnimationFrame(stripSync); }, {passive:true});
+  addEventListener("resize", stripSync);
+  stripSync();
+}
+
+/* ---------------- ПРОСМОТР ВИЗЫ ---------------- */
+var lbox = document.getElementById("lbox");
+var lbImg = document.getElementById("lboxImg"), lbCap = document.getElementById("lboxCap");
+var lbX = document.getElementById("lboxX"), lbP = document.getElementById("lboxP"), lbN = document.getElementById("lboxN");
+var visaBtns = [].slice.call(document.querySelectorAll(".visa-b")), lbI = 0;
+function lbShow(i){
+  if (!visaBtns.length) return;
+  lbI = (i + visaBtns.length) % visaBtns.length;
+  var b = visaBtns[lbI], img = b.querySelector("img"), cap = b.querySelector(".visa-cap");
+  lbImg.src = img.getAttribute("src");
+  lbImg.alt = img.alt;
+  lbCap.textContent = cap ? cap.textContent : "";
+}
+function lbOpen(i){
+  lbShow(i);
+  lbox.hidden = false;
+  document.body.classList.add("lb-open");
+  if (lbX) lbX.focus();
+}
+function lbClose(){
+  if (!lbox || lbox.hidden) return;
+  lbox.hidden = true;
+  document.body.classList.remove("lb-open");
+  if (visaBtns[lbI]) visaBtns[lbI].focus();
+}
+if (lbox && visaBtns.length) {
+  visaBtns.forEach(function(b, i){ b.addEventListener("click", function(){ lbOpen(i); }); });
+  if (lbX) lbX.addEventListener("click", lbClose);
+  if (lbP) lbP.addEventListener("click", function(){ lbShow(lbI - 1); });
+  if (lbN) lbN.addEventListener("click", function(){ lbShow(lbI + 1); });
+  lbox.addEventListener("click", function(e){
+    if (e.target === lbox || (e.target.classList && e.target.classList.contains("lbox-in"))) lbClose();
+  });
+  addEventListener("keydown", function(e){
+    if (lbox.hidden) return;
+    if (e.key === "Escape") lbClose();
+    else if (e.key === "ArrowLeft") lbShow(lbI - 1);
+    else if (e.key === "ArrowRight") lbShow(lbI + 1);
+  });
 }
 
 /* ---------------- ФОРМА -> WHATSAPP ---------------- */
