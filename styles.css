@@ -183,9 +183,10 @@ body.menu-open .mnav-in > a:nth-child(5){transition-delay:.25s}
   opacity:calc(var(--exit,0)*.78);pointer-events:none;z-index:40;
 }
 .pw.gone .plate{visibility:hidden}
-/* последняя плита уходит обычной прокруткой, её никто не накрывает */
-.pw.last .plate{transform:none}
-.pw.last .plate::after{display:none}
+/* плита, которую никто не накрывает (последняя в стопке и герой перед блоком цифр),
+   уходит обычной прокруткой - без сжатия и затемнения */
+.pw.last .plate,.pw-free .plate{transform:none}
+.pw.last .plate::after,.pw-free .plate::after{display:none}
 /* без анимаций - плиты статичны, композиция собрана */
 html.no-plate .pw,html.no-plate .pw-hero{height:auto}
 html.no-plate .plate{position:relative;height:auto;min-height:100svh;transform:none;border-radius:0}
