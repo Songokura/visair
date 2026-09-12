@@ -508,14 +508,25 @@ if (form) form.addEventListener("submit", function(ev){
   var w = window.open(url, "_blank", "noopener");
   if (!w) location.href = url;
   form.hidden = true; thanks.hidden = false;
+  conv(CONV.lead); /* конверсия «Отправка формы для потенциальных клиентов» */
 });
 
 /* ---------------- ДЕЛЕГИРОВАННЫЕ КЛИКИ tel/WhatsApp ----------------
-   (сюда позже вешаются конверсии gtag) */
+   Конверсии Google Ads. Навигацию не перехватываем: tel: открывает
+   звонилку, wa.me уходит в новую вкладку - страница остаётся живой,
+   а transport_type beacon доставляет событие даже при уходе со страницы. */
+var CONV = window.VISAIR_CONV || {};
+function conv(id){
+  if (!id || typeof window.gtag !== "function") return;
+  window.gtag("event", "conversion", {
+    send_to: id, value: 1.0, currency: "USD", transport_type: "beacon"
+  });
+}
 document.addEventListener("click", function(ev){
   var a = ev.target && ev.target.closest ? ev.target.closest("a[href^='tel:'],a[href*='wa.me']") : null;
   if (!a) return;
-  /* window.gtag && gtag('event', ...) - добавляется на этапе рекламы */
+  var href = a.getAttribute("href") || "";
+  conv(href.indexOf("tel:") === 0 ? CONV.phone : CONV.contact);
 });
 
 /* ---------------- СТАРТ ---------------- */

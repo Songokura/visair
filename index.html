@@ -7,6 +7,30 @@
 (function(d){var r=matchMedia("(prefers-reduced-motion: reduce)").matches;d.className=d.className.replace("no-js","")+((location.hash&&location.hash.length>1)||r||scrollY>80?" no-intro":" intro");})(document.documentElement);
 </script>
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<!-- Google tag (gtag.js) - Google Ads AW-18440679896 -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=AW-18440679896"></script>
+<script>
+window.dataLayer = window.dataLayer || [];
+function gtag(){dataLayer.push(arguments);}
+gtag('js', new Date());
+gtag('config', 'AW-18440679896');
+/* идентификаторы целей; вешаются на реальные события в script.js */
+window.VISAIR_CONV = {
+  phone:   'AW-18440679896/6wXACP2qkfUcENjjmdlE', /* Интерактивные номера телефонов */
+  contact: 'AW-18440679896/azepCKm_kfUcENjjmdlE', /* Контакт (WhatsApp) */
+  lead:    'AW-18440679896/TkgGCIPfnPUcENjjmdlE'  /* Отправка формы для потенциальных клиентов */
+};
+function gtag_report_conversion(url, sendTo) {
+  var callback = function () { if (typeof(url) != 'undefined') { window.location = url; } };
+  gtag('event', 'conversion', {
+    'send_to': sendTo || window.VISAIR_CONV.phone,
+    'value': 1.0,
+    'currency': 'USD',
+    'event_callback': callback
+  });
+  return false;
+}
+</script>
 <title data-i="m.title">Визовое агентство в Астане - помощь с документами на визу | Visair.kz</title>
 <meta name="description" data-i-c="m.desc" content="Visair.kz - частное визовое агентство в Астане с 2018 года: помощь с документами и анкетами на визы в США, Шенген, Великобританию, Канаду, Японию. Не посольство. Услуга от 40 000 ₸, сбор отдельно.">
 <link rel="canonical" href="https://visair.kz/">
@@ -33,7 +57,7 @@
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@700;800&family=Golos+Text:wght@400;500;600&display=swap">
 <link rel="preload" as="image" href="assets/hero.webp" media="(min-width: 701px)">
 <link rel="preload" as="image" href="assets/hero-m.webp" media="(max-width: 700px)">
-<link rel="stylesheet" href="styles.css?v=20260910-1">
+<link rel="stylesheet" href="styles.css?v=20260912-1">
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -560,6 +584,6 @@
   <a class="dock-wa" href="https://wa.me/77759020897" data-wa="wa.main" target="_blank" rel="noopener">WhatsApp</a>
 </div>
 
-<script src="script.js?v=20260910-1" defer></script>
+<script src="script.js?v=20260912-1" defer></script>
 </body>
 </html>
