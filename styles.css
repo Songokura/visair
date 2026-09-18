@@ -439,6 +439,11 @@ html.no-js .rv,html.no-plate .rv{opacity:1;transform:none}
   box-shadow:0 0 0 4px var(--paper-2);
 }
 .st-c h3{font-size:17.5px}
+/* первая карточка на всю ширину: для кого работаем */
+.st-who{grid-column:1 / -1;background:var(--ink);color:#fff}
+.st-who::before{width:10px;height:10px;top:-8px}
+.st-c.st-who h3{font-size:20px;color:#fff}
+.st-c.st-who p{color:rgba(255,255,255,.78);font-size:15.5px;max-width:none}
 .st-c p{margin-top:10px;font-size:14.5px;line-height:1.5;color:var(--mut)}
 @media(min-width:640px){.statuses{grid-template-columns:1fr 1fr;gap:16px}}
 @media(min-width:1000px){.statuses{grid-template-columns:repeat(3,1fr);gap:18px}}
@@ -640,7 +645,7 @@ body.lb-open{overflow:hidden}
 .field select option{color:var(--ink);background:#fff}
 .field input::placeholder{color:rgba(255,255,255,.35)}
 .field input:focus,.field select:focus{border-color:var(--coral);background:rgba(255,255,255,.1)}
-.field.bad input{border-color:var(--coral);background:rgba(234,111,81,.12)}
+.field.bad input,.field.bad select{border-color:var(--coral);background-color:rgba(234,111,81,.12)}
 .hp{position:absolute;left:-9999px;opacity:0;height:0;overflow:hidden}
 .f-err{margin-top:12px;color:#FFB4A1;font-size:14px;text-align:center}
 .f-act{display:grid;grid-template-columns:1fr;gap:12px;margin-top:22px;width:min(100%,520px);margin-left:auto;margin-right:auto}
