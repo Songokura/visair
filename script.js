@@ -371,6 +371,22 @@ document.querySelectorAll('.lf input[type="tel"]').forEach(function(el){
   el.addEventListener("blur", function(){ if (el.value.replace(/\D/g, "").length <= 1) el.value = ""; });
 });
 
+/* текст заявки для WhatsApp - на языке сайта, выбранные пункты как их видит человек */
+var WA = "77759020897";
+var WA_MSG = {
+  ru:"Здравствуйте! Заявка с сайта visair.kz.\nИмя: {n}\nТелефон: {p}\nТип визы: {t}\nНаправление: {d}{c}",
+  com:"\nКомментарий: "
+};
+function waText(form){
+  var el = form.elements, kk = curLang() === "kk" && KZ && KZ["wa.msg"];
+  function opt(s){ return s.options[s.selectedIndex] ? s.options[s.selectedIndex].text : s.value; }
+  var c = el.comment.value.trim();
+  return (kk ? KZ["wa.msg"] : WA_MSG.ru)
+    .replace("{n}", el.name.value.trim()).replace("{p}", el.phone.value.trim())
+    .replace("{t}", opt(el["Тип визы"])).replace("{d}", opt(el["Направление"]))
+    .replace("{c}", c ? (kk ? KZ["wa.com"] : WA_MSG.com) + c : "");
+}
+
 /* проверка полей. Обработчик на window в фазе захвата: ошибочную форму
    останавливаем раньше трекера, чтобы в Telegram не ушла пустая заявка */
 function checkLead(form){
@@ -392,7 +408,10 @@ window.addEventListener("submit", function(ev){
   if (!checkLead(form)) { ev.stopImmediatePropagation(); return; }
 }, true);
 document.querySelectorAll(".lf").forEach(function(form){
-  /* обычная фаза: трекер уже забрал поля, показываем «спасибо» */
+  /* обычная фаза: трекер уже забрал поля и отправил их в Telegram.
+     Дублируем заявку в WhatsApp: окно открываем синхронно, в момент клика
+     (иначе iOS его блокирует), через window.open - трекер допишет в текст
+     код обращения и склеит форму и WhatsApp в одно обращение. */
   form.addEventListener("submit", function(ev){
     ev.preventDefault();
     if (form.querySelector(".f-err").hidden === false) return;
@@ -400,6 +419,9 @@ document.querySelectorAll(".lf").forEach(function(form){
     leadSent = true; clearTimeout(lmTimer);
     try { sessionStorage.setItem("visair-lead", "1"); } catch(e){}
     conv(CONV.lead); /* конверсия «Отправка формы для потенциальных клиентов» */
+    var url = "https://wa.me/" + WA + "?text=" + encodeURIComponent(waText(form));
+    var w = window.open(url, "_blank", "noopener");
+    if (!w) location.href = url;
     var th = form.parentNode.querySelector(".thanks");
     setTimeout(function(){ form.reset(); form.hidden = true; if (th) th.hidden = false; }, 0);
   });
