@@ -1,12 +1,12 @@
 /* ============================================================
    VISAIR.KZ - скрипт страницы.
-   Плиты и штамп-оттиск · интро · перевод RU/KZ · шапка и меню ·
-   бегущая лента · появление · форма -> WhatsApp · нижняя панель.
+   Плиты направлений · перевод RU/KZ · шапка и меню · появление ·
+   лид-форма (окно по кнопкам и через 10 секунд) · нижняя панель.
+   Заявки уходят в Telegram через трекер LeadBot (t.js ловит submit с полями).
    Библиотек нет.
    ============================================================ */
 (function(){
 "use strict";
-var WA = "77759020897";
 var RED = matchMedia("(prefers-reduced-motion: reduce)").matches;
 var HAS_IO = typeof IntersectionObserver === "function";
 var doc = document.documentElement;
@@ -23,7 +23,7 @@ function loadKK(done){
   if (KZ) return done();
   var s = document.createElement("script");
   s.src = "assets/lang/kk.js" + (ASSET_V ? "?v=" + ASSET_V : "");
-  s.onload = function(){ var p = window.SITE_KK; if (p) { KZ = p.dict; WAT.kk = p.wa; UI.kk = p.ui; } done(); };
+  s.onload = function(){ var p = window.SITE_KK; if (p) KZ = p.dict; done(); };
   s.onerror = function(){ done(); };
   document.head.appendChild(s);
 }
@@ -31,22 +31,6 @@ function setLang(lang, done){
   if (lang !== "kk") { applyLang("ru"); if (done) done(); return; }
   loadKK(function(){ applyLang(KZ ? "kk" : "ru"); if (done) done(); });
 }
-
-/* готовые сообщения в WhatsApp */
-var WAT = {
-  ru:{
-    "wa.main":"Здравствуйте! Нужна помощь с документами на визу. Подскажите, пожалуйста, сроки, стоимость услуги и список документов.",
-    "wa.shengen":"Здравствуйте! Нужна помощь с документами на шенгенскую визу (Европа). Подскажите сроки, стоимость услуги и список документов.",
-    "wa.usa":"Здравствуйте! Нужна помощь с документами на визу в США. Подскажите сроки, стоимость услуги и список документов.",
-    "wa.uk":"Здравствуйте! Нужна помощь с документами на визу в Великобританию. Подскажите сроки, стоимость услуги и список документов.",
-    "wa.canada":"Здравствуйте! Нужна помощь с документами на визу в Канаду. Подскажите сроки, стоимость услуги и список документов.",
-    "wa.japan":"Здравствуйте! Нужна помощь с документами на визу в Японию (или другую страну Азии). Подскажите сроки, стоимость услуги и список документов.",
-    "wa.price":"Здравствуйте! Подскажите, пожалуйста, стоимость услуги по подготовке документов и что в неё входит."
-  }
-};
-var UI = {
-  ru:{ msg:"Здравствуйте! Меня зовут {n}. Нужна помощь с документами на визу: {d}. Гражданство: {c}. Телефон: {p}." }
-};
 
 /* ---------------- ПЕРЕВОД ---------------- */
 var RU = {};
@@ -81,17 +65,12 @@ function applyLang(lang){
   var t = pick("m.title", kk); if (t) document.title = t.replace(/<[^>]*>/g, "");
   var og = document.querySelector('meta[property="og:locale"]');
   if (og) og.setAttribute("content", kk ? "kk_KZ" : "ru_RU");
-  document.querySelectorAll("[data-wa]").forEach(function(a){
-    var m = ((kk && WAT.kk) || WAT.ru)[a.dataset.wa] || WAT.ru["wa.main"];
-    a.href = "https://wa.me/" + WA + "?text=" + encodeURIComponent(m);
-  });
   document.querySelectorAll(".lang button").forEach(function(b){
     var on = b.getAttribute("data-lang") === lang;
     b.classList.toggle("is-active", on);
     b.setAttribute("aria-pressed", on ? "true" : "false");
   });
   try { localStorage.setItem("visair-lang", lang); } catch(e){}
-  buildTicker();
 }
 /* язык: ?lang= в URL (для рекламы) важнее сохранённого выбора */
 function startLang(){
@@ -102,55 +81,9 @@ function startLang(){
   return "ru";
 }
 
-/* ---------------- БЕГУЩАЯ ЛЕНТА ----------------
-   Шаг цикла = ширина одной копии списка; копий столько,
-   чтобы дорожка перекрывала два экрана. */
-var tickerSrc = null;
-function buildTicker(){
-  var track = document.getElementById("ticker"); if (!track) return;
-  if (!tickerSrc) tickerSrc = track.querySelector(".ticker-set").outerHTML;
-  var kk = curLang() === "kk";
-  var html = tickerSrc.replace(/<b data-i="(t\.\d)">[^<]*<\/b>/g, function(_, k){ return '<b data-i="' + k + '">' + (pick(k, kk) || "") + "</b>"; });
-  track.innerHTML = html;
-  var w = track.firstElementChild.getBoundingClientRect().width || 600;
-  var need = Math.max(2, Math.ceil((innerWidth * 2 + w) / w));
-  for (var i = 1; i < need; i++) track.insertAdjacentHTML("beforeend", html);
-  track.style.setProperty("--w", w.toFixed(1) + "px");
-  track.style.setProperty("--dur", Math.max(14, w / 55).toFixed(1) + "s");
-}
-
-/* ---------------- ПЛИТЫ И ШТАМП ---------------- */
+/* ---------------- ПЛИТЫ НАПРАВЛЕНИЙ ---------------- */
 function clamp(v){ return v < 0 ? 0 : (v > 1 ? 1 : v); }
-function easeInOut(t){ return t < .5 ? 2*t*t : 1 - Math.pow(-2*t + 2, 2) / 2; }
 function easeOutBack(t){ var c1 = 1.70158, c3 = c1 + 1; return 1 + c3 * Math.pow(t - 1, 3) + c1 * Math.pow(t - 1, 2); }
-
-var heroPw = document.getElementById("top");
-var heroStamp = document.getElementById("heroStamp");
-var heroM = { w:320, h:300, cy:400, smax:3 };
-
-/* размер штампа в герое: помещается между текстом и лентой,
-   плюс сразу считаем, во сколько раз его растить до краёв экрана */
-function measureHero(){
-  if (!heroStamp) return;
-  var W = innerWidth, H = innerHeight;
-  var stage = heroStamp.parentElement;
-  var st = getComputedStyle(stage);
-  var availH = stage.clientHeight - parseFloat(st.paddingTop) - parseFloat(st.paddingBottom);
-  var aspect = W < 700 ? 1.08 : 1.5;
-  var w = Math.min(780, W * .88);
-  var h = Math.min(w / aspect, availH - .07 * w);
-  if (h < 150) { h = 150; }
-  w = Math.min(w, h * aspect);
-  heroStamp.style.setProperty("--w", w.toFixed(1) + "px");
-  heroStamp.style.setProperty("--h", h.toFixed(1) + "px");
-  heroStamp.style.setProperty("--s", "1");
-  heroStamp.style.setProperty("--dy", "0px");
-  var r = heroStamp.getBoundingClientRect();
-  var pr = heroPw.querySelector(".plate").getBoundingClientRect();
-  heroM.w = w; heroM.h = h;
-  heroM.cy = (r.top + r.height / 2) - pr.top;
-  heroM.smax = Math.max(W / w, H / h) * 1.12;
-}
 
 var pws = [].slice.call(document.querySelectorAll(".pw"));
 function update(){
@@ -165,14 +98,7 @@ function update(){
     pw.style.setProperty("--stay",  stay.toFixed(3));
     pw.classList.toggle("gone", exit >= 1);
     pw.classList.toggle("on", enter > 0.72);
-    if (pw === heroPw && heroStamp) {
-      var e = easeInOut(stay);
-      var s = 1 + (heroM.smax - 1) * e;
-      heroStamp.style.setProperty("--s", s.toFixed(4));
-      heroStamp.style.setProperty("--dy", ((H / 2 - heroM.cy) * e).toFixed(1) + "px");
-      heroStamp.style.setProperty("--rot", (-4 * (1 - e)).toFixed(2) + "deg");
-      heroStamp.style.setProperty("--rr", (24 * (1 - e)).toFixed(1) + "px");
-    } else if (pw.querySelector(".dir-stamp")) {
+    if (pw.querySelector(".dir-stamp")) {
       var t = clamp((enter - .42) / .58);
       var ap = t <= 0 ? 0 : easeOutBack(t);
       pw.style.setProperty("--ap", ap.toFixed(3));
@@ -187,34 +113,12 @@ function onScroll(){
 }
 if (!RED) {
   addEventListener("scroll", onScroll, {passive:true});
-  addEventListener("resize", function(){ measureHero(); update(); buildTicker(); });
-  addEventListener("load", function(){ measureHero(); update(); });
+  addEventListener("resize", update);
+  addEventListener("load", update);
 } else {
   doc.classList.add("no-plate");
 }
-window.plateSync = function(){ measureHero(); update(); };
-
-/* ---------------- ИНТРО ----------------
-   Класс intro ставится инлайн-скриптом в <head>. Здесь - снятие:
-   штамп «прикладывается», текст поднимается. Пропуск - при хэше,
-   прокрутке и reduced-motion (тогда сразу no-intro). */
-function finishIntro(){
-  if (!doc.classList.contains("intro")) return;
-  doc.classList.remove("intro");
-  doc.classList.add("intro-anim", "intro-done");
-  setTimeout(function(){ doc.classList.remove("intro-anim"); }, 1700);
-}
-if (doc.classList.contains("intro")) {
-  if (scrollY > 80) { doc.classList.remove("intro"); doc.classList.add("no-intro"); }
-  else {
-    var started = false;
-    function go(){ if (started) return; started = true; finishIntro(); }
-    var img = heroStamp && heroStamp.querySelector("img");
-    if (img && img.complete) setTimeout(go, 120);
-    else if (img) { img.addEventListener("load", function(){ setTimeout(go, 60); }); setTimeout(go, 900); }
-    else setTimeout(go, 200);
-  }
-}
+window.plateSync = update;
 
 /* ---------------- ШАПКА, МЕНЮ, ДОК ---------------- */
 var hdr = document.getElementById("hdr"), dock = document.getElementById("dock"), prev = scrollY || 0;
@@ -276,7 +180,7 @@ if (location.hash && document.getElementById(location.hash.slice(1))) {
     var el = document.getElementById(location.hash.slice(1));
     var off = el.classList.contains("pw") ? 0 : parseFloat(getComputedStyle(doc).getPropertyValue("--hh")) || 64;
     window.scrollTo(0, el.getBoundingClientRect().top + scrollY - off);
-    measureHero(); update();
+    update();
   });
 }
 
@@ -403,34 +307,106 @@ if (lbox && visaBtns.length) {
   });
 }
 
-/* ---------------- ФОРМА -> WHATSAPP ---------------- */
-var form = document.getElementById("form"), ferr = document.getElementById("ferr"), fcit = document.getElementById("fcit"), thanks = document.getElementById("thanks");
-if (form) form.addEventListener("submit", function(ev){
+/* ---------------- ЛИД-ФОРМА ----------------
+   Весь поток заявок - через форму: кнопки .js-lead открывают окно (кнопка
+   направления сразу подставляет страну), через 10 секунд на сайте окно
+   всплывает само - один раз за визит и только если заявки ещё не было.
+   Отправку в Telegram делает трекер LeadBot: он слушает submit в фазе
+   захвата и забирает поля формы. Сайт только проверяет поля и показывает «спасибо». */
+var lm = document.getElementById("lm"), lmForm = document.getElementById("lmForm");
+var leadSent = false, lmLast = null, lmTimer = null;
+try { leadSent = sessionStorage.getItem("visair-lead") === "1"; } catch(e){}
+function lmOpen(dir){
+  if (!lm) return;
+  clearTimeout(lmTimer);
+  var box = lm.querySelector(".lm-box");
+  lmForm.hidden = false; box.querySelector(".thanks").hidden = true;
+  if (dir) { var sel = lmForm.elements["Направление"]; sel.value = dir; sel.closest(".field").classList.remove("bad"); }
+  setMenu(false);
+  lmLast = document.activeElement;
+  lm.hidden = false;
+  document.body.classList.add("lm-open");
+  setTimeout(function(){ var f = lmForm.elements.name; if (f && innerWidth > 700) f.focus(); }, 60);
+}
+function lmClose(){
+  if (!lm || lm.hidden) return;
+  lm.hidden = true;
+  document.body.classList.remove("lm-open");
+  if (lmLast && lmLast.focus) lmLast.focus();
+}
+document.addEventListener("click", function(ev){
+  var b = ev.target && ev.target.closest ? ev.target.closest(".js-lead") : null;
+  if (!b) return;
   ev.preventDefault();
-  if (form.site && form.site.value) return; /* honeypot */
-  var name = form.name.value.trim(), phone = form.phone.value.trim(), dir = form.dir.value, msg = form.msg.value.trim();
-  var okPhone = phone.replace(/\D/g, "").length >= 10;
-  form.querySelectorAll(".field").forEach(function(f){ f.classList.remove("bad"); });
-  if (!name) form.name.closest(".field").classList.add("bad");
-  if (!okPhone) form.phone.closest(".field").classList.add("bad");
-  /* работаем только с гражданами РК: другое гражданство заявку не отправляет */
-  var cit = form.cit.value;
-  if (!cit) form.cit.closest(".field").classList.add("bad");
-  fcit.hidden = cit !== "Другая страна";
-  if (!fcit.hidden) { ferr.hidden = true; form.cit.closest(".field").classList.add("bad"); return; }
-  if (!name || !okPhone || !cit) { ferr.hidden = false; return; }
-  ferr.hidden = true;
-  var citTxt = form.cit.options[form.cit.selectedIndex].text;
-  var text = (UI[curLang()] || UI.ru).msg.replace("{n}", name).replace("{d}", dir).replace("{c}", citTxt).replace("{p}", phone) + (msg ? " " + msg : "");
-  var url = "https://wa.me/" + WA + "?text=" + encodeURIComponent(text);
-  var w = window.open(url, "_blank", "noopener");
-  if (!w) location.href = url;
-  form.hidden = true; thanks.hidden = false;
-  conv(CONV.lead); /* конверсия «Отправка формы для потенциальных клиентов» */
+  lmOpen(b.dataset.dir || "");
+});
+if (lm) {
+  document.getElementById("lmX").addEventListener("click", lmClose);
+  lm.querySelector(".lm-done").addEventListener("click", lmClose);
+  lm.addEventListener("click", function(e){ if (e.target === lm) lmClose(); });
+  addEventListener("keydown", function(e){ if (e.key === "Escape") lmClose(); });
+  lmTimer = setTimeout(function(){
+    if (leadSent || !lm.hidden || document.body.classList.contains("lb-open")) return;
+    try { if (sessionStorage.getItem("visair-lm")) return; sessionStorage.setItem("visair-lm", "1"); } catch(e){}
+    lmOpen("");
+  }, 10000);
+}
+
+/* маска телефона +7 (___) ___-__-__ */
+document.querySelectorAll('.lf input[type="tel"]').forEach(function(el){
+  el.addEventListener("input", function(){
+    var d = el.value.replace(/\D/g, "");
+    if (!d) { el.value = ""; return; }
+    if (d.charAt(0) === "8") d = "7" + d.slice(1);
+    if (d.charAt(0) !== "7") d = "7" + d;
+    d = d.slice(0, 11);
+    var r = "+7";
+    if (d.length > 1) r += " (" + d.slice(1, 4);
+    if (d.length > 4) r += ") " + d.slice(4, 7);
+    if (d.length > 7) r += "-" + d.slice(7, 9);
+    if (d.length > 9) r += "-" + d.slice(9, 11);
+    el.value = r;
+  });
+  el.addEventListener("focus", function(){ if (!el.value) el.value = "+7 ("; });
+  el.addEventListener("blur", function(){ if (el.value.replace(/\D/g, "").length <= 1) el.value = ""; });
 });
 
-if (form && form.cit) form.cit.addEventListener("change", function(){
-  if (form.cit.value !== "Другая страна") { fcit.hidden = true; form.cit.closest(".field").classList.remove("bad"); }
+/* проверка полей. Обработчик на window в фазе захвата: ошибочную форму
+   останавливаем раньше трекера, чтобы в Telegram не ушла пустая заявка */
+function checkLead(form){
+  var el = form.elements, ok = true;
+  form.querySelectorAll(".field").forEach(function(f){ f.classList.remove("bad"); });
+  function need(inp, good){ if (!good) { inp.closest(".field").classList.add("bad"); ok = false; } }
+  need(el.name, el.name.value.trim().length > 0);
+  need(el.phone, el.phone.value.replace(/\D/g, "").length === 11);
+  need(el["Тип визы"], !!el["Тип визы"].value);
+  need(el["Направление"], !!el["Направление"].value);
+  form.querySelector(".f-err").hidden = ok;
+  return ok;
+}
+window.addEventListener("submit", function(ev){
+  var form = ev.target;
+  if (!form || !form.classList || !form.classList.contains("lf")) return;
+  ev.preventDefault();
+  if (form.elements.website && form.elements.website.value) { ev.stopImmediatePropagation(); return; } /* honeypot */
+  if (!checkLead(form)) { ev.stopImmediatePropagation(); return; }
+}, true);
+document.querySelectorAll(".lf").forEach(function(form){
+  /* обычная фаза: трекер уже забрал поля, показываем «спасибо» */
+  form.addEventListener("submit", function(ev){
+    ev.preventDefault();
+    if (form.querySelector(".f-err").hidden === false) return;
+    if (form.elements.website && form.elements.website.value) return;
+    leadSent = true; clearTimeout(lmTimer);
+    try { sessionStorage.setItem("visair-lead", "1"); } catch(e){}
+    conv(CONV.lead); /* конверсия «Отправка формы для потенциальных клиентов» */
+    var th = form.parentNode.querySelector(".thanks");
+    setTimeout(function(){ form.reset(); form.hidden = true; if (th) th.hidden = false; }, 0);
+  });
+  form.addEventListener("change", function(e){
+    var f = e.target.closest && e.target.closest(".field");
+    if (f && e.target.value) f.classList.remove("bad");
+  });
 });
 
 /* ---------------- ДЕЛЕГИРОВАННЫЕ КЛИКИ tel/WhatsApp ----------------
@@ -455,8 +431,8 @@ document.addEventListener("click", function(ev){
 snapshot();
 setLang(startLang());
 var y = document.getElementById("year"); if (y) y.textContent = String(new Date().getFullYear());
-measureHero(); update();
-if (document.fonts && document.fonts.ready) document.fonts.ready.then(function(){ measureHero(); update(); buildTicker(); });
+update();
+if (document.fonts && document.fonts.ready) document.fonts.ready.then(update);
 
 document.querySelectorAll(".lang button").forEach(function(b){
   b.addEventListener("click", function(){
@@ -467,7 +443,7 @@ document.querySelectorAll(".lang button").forEach(function(b){
     setTimeout(function(){
       setLang(l, function(){
         document.body.classList.remove("lang-swap");
-        measureHero(); update();
+        update();
       });
     }, 180);
   });
